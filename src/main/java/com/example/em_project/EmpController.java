@@ -10,6 +10,10 @@ import logger.CLog;
 @RestController
 public class EmpController {
 
+    EmpController(EmployeeService service){
+        employeeService = service;
+    }
+
     @Autowired
     EmployeeService employeeService;
 
