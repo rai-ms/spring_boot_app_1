@@ -52,4 +52,18 @@ public class EmpController {
         }
         return  response;
     }
+
+    @PutMapping("employees/{id}")
+    public Response updateEmployee(@PathVariable Long id, @RequestBody EmployeeRequest employee){
+        CLog.log("Called Api Update Employee with id " + id + " and employee " + employee);
+        Response response;
+        try {
+           Employee emp =  employeeService.updateEmployee(id, new Employee(employee.getName(), employee.getDepartment()));
+           response = new SuccessApiResponse("Employee Data Updated", emp);
+        } catch (Exception e){
+            CLog.log("Unable to Update Employee Due to Error: " + e);
+            response = new ErrorApiResponse("Unable to Update Employee Data", e.toString());
+        }
+        return  response;
+    }
 }
