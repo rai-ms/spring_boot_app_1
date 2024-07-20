@@ -38,18 +38,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean deleteEmployee(Long id) {
-        employeeRepository.deleteById(id);
-        return true;
+        boolean response = false;
+        try {
+            employeeRepository.deleteById(id);
+            response = true;
+        } catch (Exception e){
+            CLog.log("Error Deleting Employee");
+        }
+        return response;
     }
 
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
-//        for (int i = 0; i < emp.size(); ++i) {
-//            Employee employee1 = emp.get(i);
-//            if (employee1.getId() == id) {
-//                emp.add(i, employee);
-//            }
-//        }
-        return  new Employee();
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if(employeeOptional.isPresent()){
+            Employee existingEmployee = employeeOptional.get();
+            BeanUtils.copyProperties(employee, existingEmployee, "id"); // Copy properties except the id
+            return employeeRepository.saveAndFlush(existingEmployee);
+        }
+        return null;
     }
 }

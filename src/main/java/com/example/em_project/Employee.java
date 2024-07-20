@@ -23,5 +23,4 @@ public class Employee {
         this.name = name;
         this.department = department;
     }
-
 }
